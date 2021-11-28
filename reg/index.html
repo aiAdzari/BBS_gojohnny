@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+    <link rel="stylesheet" type="text/css" href="../css/reset.css">
+
+    <style>
+        body {
+            font-family: "PingFang SC", "STXihei", monospace;
+            /*规定字体优先使用苹方、思源黑体，若没有则随便用个等间距的吧*/
+            background-color: rgb(226, 226, 226);
+        }
+
+
+        .wrapper {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        form {
+            position: absolute;
+            width: 350px;
+            height: 300px;
+            left: 50%;
+            top: 40%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            text-align: center;
+            border-radius: 5px;
+            border-bottom: 1px solid rgba(80, 80, 90, .35);
+            box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table tr {
+            width: 100%;
+            padding: 0 10px;
+            height: 58px;
+        }
+
+        table tr td {
+            vertical-align: middle;
+        }
+
+        .title {
+            width: 40%;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .title a {
+            color: #4d5256;
+            padding: 0 15px;
+        }
+
+        .first {
+            font-weight: bold;
+        }
+
+        .input {
+            width: 60%;
+        }
+
+        input {
+            width: 80%;
+            height: 20px;
+            background-color: rgb(226, 226, 226);
+        }
+
+        button {
+            margin-top: 30px;
+            border: none;
+            color: #090909;
+            padding: 0.7em 1.7em;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 0.5em;
+            background: white;
+            border: 1px solid #e8e8e8;
+            transition: all .3s;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+        }
+
+        button:hover {
+            border: 1px solid white;
+        }
+
+        button:active {
+            box-shadow: 4px 4px 12px #c5c5c5,
+                -4px -4px 12px #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <form method="post" action="../php/reg.php" onsubmit=" return checkinput();" name="myform">
+            <table cellpadding="12" cellspacing="1">
+                <tr>
+                    <td colspan="2" class="title first">用户注册<span class="spa"><a href="../index.html">[返回首页]</a></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title">用 户 名 :</td>
+                    <td class="input"><input type="text" name="username" autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <td class="title">密　　码 :</td>
+                    <td class="input"><input type="password" name="password" autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <td class="title">确认密码 :</td>
+                    <td class="input"><input type="password" name="password1"></td>
+                </tr>
+                <tr>
+                    <td class="title">邮　　箱 :</td>
+                    <td class="input"><input type="email" name="email"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="title">
+                        <button class="but">立即注册</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <script type="text/javascript">
+        function checkinput() {
+            if (myform.username.value == "") {
+                alert("请输入你的账号");
+                myform.username.focus();
+                return false;
+            }
+            if (myform.password.value == "") {
+                alert("请输入密码");
+                myform.password.focus();
+                return false;
+            }
+            if (myform.password.value != myform.password1.value) {
+                alert("你输入的两次密码不一致，请重新输入！");
+                myform.password.focus();
+                return false;
+            }
+        }
+    </script>
+</body>
+
+</html>

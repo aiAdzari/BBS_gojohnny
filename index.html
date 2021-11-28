@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBS</title>
+    <link rel="stylesheet" type="text/css" href="./css/reset.css">
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/qs/6.9.4/qs.min.js"></script>
+
+    <style>
+        body {
+            font-family: "PingFang SC", "STXihei", monospace;
+            /*规定字体优先使用苹方、思源黑体，若没有则随便用个等间距的吧*/
+            background-color: rgb(226, 226, 226);
+        }
+
+
+        .wrapper {
+            display: -webkit-flex;
+            display: flex;
+            justify-content: center;
+            -webkit-justify-content: center;
+            flex-wrap: wrap;
+            text-align: center;
+
+        }
+
+        .title {
+            height: 70px;
+            width: 100%;
+            background-color: black;
+            color: white;
+        }
+
+        .title h2 {
+            margin: 20px 5vw;
+            width: 50vw;
+            font-size: 30px;
+            display: inline-block;
+        }
+
+        .title p {
+            font-size: 15px;
+            float: right;
+            margin: 40px 5px 0 0;
+        }
+
+        .nav {
+            background-color: white;
+            width: 100%;
+            height: 50px;
+            z-index: 995;
+            box-shadow: 0 2px 10px 0 rgba(119, 119, 119, .4);
+        }
+
+        .fixnav {
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .nav ul {
+            list-style-type: none;
+        }
+
+        .nav li {
+            float: left;
+        }
+
+        .nav a {
+            text-decoration: none;
+            display: inline-block;
+            color: rgb(56, 56, 56);
+            font-size: 18px;
+            margin: 15px 20px;
+
+        }
+
+        .nav a:hover {
+            color: rgb(160, 158, 158);
+        }
+
+        .content {
+            display: -webkit-flex;
+            display: flex;
+            justify-content: center;
+            -webkit-justify-content: center;
+        }
+
+        .main {
+            width: 50vw;
+            min-width: 500px;
+            margin: 0 20px;
+            background-color: rgb(226, 226, 226);
+        }
+
+        .rightbar {
+            width: 270px;
+            background-color: rgb(226, 226, 226);
+        }
+
+        .sep {
+            height: 20px;
+            background-color: rgb(226, 226, 226);
+        }
+
+        .fixsep {
+            height: 70px;
+            background-color: rgb(226, 226, 226);
+        }
+
+        .indro {
+            width: 100%;
+            height: 30px;
+            background-color: rgb(226, 226, 226);
+            text-align: left;
+
+        }
+
+        .indro p {
+            font-size: 20px;
+            line-height: 20px;
+        }
+
+        .hello {
+            width: 100%;
+            height: 30px;
+            background-color: rgb(226, 226, 226);
+            text-align: left;
+        }
+
+        .hello p {
+            font-size: 20px;
+            line-height: 20px;
+        }
+
+        .test {
+            height: 120vh;
+            background-color: rgb(226, 226, 226);
+        }
+
+        .forum {
+            width: 100%;
+            margin-bottom: 20px;
+            min-height: 100px;
+            background-color: white;
+            border-style: solid;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+            border-color: rgb(226, 226, 226);
+            border-width: 1px;
+        }
+
+        .forum_subject {
+            width: 100%;
+            overflow: hidden;
+            /*防止浮动元素造成的父元素高度坍塌*/
+        }
+
+        .forum_subject p {
+            float: left;
+            text-align: left;
+            font-size: 18px;
+            margin: 10px 30px 0 30px;
+            padding: 2px;
+            background-color: rgb(226, 226, 226);
+        }
+
+        .forum_name {
+            padding: 10px 0;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .forum_name a {
+            font-size: 25px;
+            text-decoration: none;
+            color: black;
+
+        }
+
+        .forum_name a:hover {
+            color: rgb(160, 158, 158);
+        }
+
+        .forum_des {
+            width: 100%;
+            padding-bottom: 10px;
+        }
+
+        #empty_repo {
+            font-size: 50px
+        }
+
+        .logininfo {
+            width: 100%;
+            height: 160px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+            background-color: white;
+        }
+
+        .decon {
+            width: 100%;
+            height: 100%;
+        }
+
+        .login_up {
+            width: 100%;
+            height: 40%;
+            text-align: left;
+            background-color: white;
+            border-bottom: 1px solid rgba(80, 80, 90, .35);
+        }
+
+        .login_up h3 {
+            font-size: 16px;
+            padding: 18px 0 5px 30px;
+            font-weight: bold;
+
+        }
+
+        .login_up p {
+            font-size: 16px;
+            padding: 0 0 10px 30px;
+            ;
+            color: #ccc;
+        }
+
+        .login_down {
+            width: calc(100% - 60px);
+            height: calc(70% - 60px);
+            padding: 30px;
+            background-color: white;
+        }
+
+        .login_down p {
+            margin: 20px;
+            font-size: 14px;
+        }
+
+        .login_down p a {
+            color: #4d5256;
+        }
+
+        .login_down p a:hover {
+            color: rgb(160, 158, 158);
+        }
+
+        .normalbtn {
+            padding: 3px 12px;
+            line-height: 100%;
+            background-image: linear-gradient(white, rgb(226, 226, 226));
+            color: #333;
+            font-weight: bold;
+            text-shadow: 0 1px 0 #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            border: 1px solid rgba(80, 80, 90, .2);
+            border-bottom-color: rgba(80, 80, 90, .35);
+            box-shadow: 0 1px 0 rgba(66, 66, 77, .1);
+        }
+
+        .normalbtn:hover {
+            color: rgb(160, 158, 158);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="title">
+            <h2>BBS——由VUE与PHP构建</h2>
+            <p>by:aiAdzari</p>
+        </div>
+        <div id="nav" class="nav">
+            <ul>
+                <li><a href="">项目首页</a></li>
+                <li><a href="">BBS</a></li>
+                <li style="float: right;"><a href="">登陆/注册</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="main">
+                <div id="sep1" class="sep"></div>
+                <div class="indro">
+                    <p>板块：</p>
+                </div>
+                <div id="forum-post-content">
+                    <div v-if="posts.length != 0">
+                        <!--判断是否有板块-->
+                        <forum-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post"></forum-post>
+                    </div>
+                    <div v-else>
+                        <p id="empty_repo">板块为空或获取失败！</p>
+                    </div>
+                </div>
+
+                <div class="test"></div>
+
+            </div>
+            <div class="rightbar">
+                <div id="sep2" class="sep"></div>
+                <div class="hello">
+                    <p>消息：</p>
+                </div>
+                <div class="logininfo">
+                    <div class="decon">
+                        <div class="login_up">
+                            <h3>这里是咸鱼小镇</h3>
+                            <p>一个技术摸鱼BBS</p>
+                        </div>
+                        <div class="login_down">
+                            <a href="./reg" class="normalbtn" target="_blank">现在注册</a>
+                            <p>已经注册了吗？请<a href="./login/">登陆</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        Vue.component("forum-post", {
+            props: ['post'],
+            template: `<div class="forum">
+                        <div class="forum_subject">
+                            <p>{{post.subject}}</p>
+                        </div>
+                        <div class="forum_name">
+                            <a :href="'forums?F='+post.id">{{post.forum_name}}</a>
+                        </div>
+                        <div class="forum_des">
+                            <p>{{post.forum_description}}</p>
+                        </div>
+                    </div>`
+
+        });
+        new Vue({
+            el: "#forum-post-content",
+            data: {
+                posts: []
+            },
+            created: function () {
+                let vm = this;
+
+                axios.post("./php/index.php")
+                    .then(function (response) {
+                        vm.posts = response.data;
+                        console.log(vm.posts);
+                    })
+                    .catch(function (error) {
+                        console.error();
+                    });
+            }
+        });
+
+
+        window.onscroll = function () {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            if (scrollTop >= 70) {
+                document.getElementById("nav").classList.add("fixnav"); //在滚动完title的距离后，nav增加fixd属性，吸附在窗口上方
+                document.getElementById("sep1").classList.remove("sep"); //修复因为滚动后，nav为fixd后本身不占用html空间导致的下方元素向上跳动
+                document.getElementById("sep1").classList.add("fixsep");
+                document.getElementById("sep2").classList.remove("sep");
+                document.getElementById("sep2").classList.add("fixsep");
+            } else {
+                document.getElementById("nav").classList.remove("fixnav");
+                document.getElementById("sep1").classList.remove("fixsep");
+                document.getElementById("sep1").classList.add("sep");
+                document.getElementById("sep2").classList.remove("fixsep");
+                document.getElementById("sep2").classList.add("sep");
+            }
+
+        }
+    </script>
+</body>
+
+</html>

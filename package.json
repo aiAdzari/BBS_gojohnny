@@ -1,0 +1,32 @@
+{
+  "name": "bbs_gojohnny",
+  "version": "1.0.0",
+  "description": "a bbs created by Vue and PHP",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aiAdzari/BBS_gojohnny.git"
+  },
+  "keywords": [
+    "bbs"
+  ],
+  "author": "aiAdzari",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aiAdzari/BBS_gojohnny/issues"
+  },
+  "homepage": "https://github.com/aiAdzari/BBS_gojohnny#readme",
+  "devDependencies": {
+    "css-loader": "^6.5.1",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}
