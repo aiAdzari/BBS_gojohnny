@@ -19,6 +19,15 @@
             background-color: rgb(226, 226, 226);
         }
 
+        a {
+            transition: color 0.2s;
+            color: black;
+
+        }
+
+        a:hover {
+            color: rgb(160, 158, 158);
+        }
 
         .wrapper {
             display: -webkit-flex;
@@ -79,10 +88,6 @@
             font-size: 18px;
             margin: 15px 20px;
 
-        }
-
-        .nav a:hover {
-            color: rgb(160, 158, 158);
         }
 
         .content {
@@ -199,9 +204,23 @@
         .logininfo {
             width: 100%;
             height: 160px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+            background-color: white;
+        }
+
+        .newforum {
+            width: 100%;
+            height: 55px;
             margin-bottom: 10px;
             box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
             background-color: white;
+        }
+
+        .newforum a {
+            display: block;
+            padding: 15px 0;
+            font-size: large;
         }
 
         .decon {
@@ -247,9 +266,6 @@
             color: #4d5256;
         }
 
-        .login_down p a:hover {
-            color: rgb(160, 158, 158);
-        }
 
         .normalbtn {
             padding: 3px 12px;
@@ -268,11 +284,17 @@
         .normalbtn:hover {
             color: rgb(160, 158, 158);
         }
+
+        .username {
+            color: black;
+            font-size: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 
 <body>
-    <div class="wrapper">
+    <div class="wrapper" id="post-content">
         <div class="title">
             <h2>BBS——由VUE与PHP构建</h2>
             <p>by:aiAdzari</p>
@@ -281,7 +303,9 @@
             <ul>
                 <li><a href="">项目首页</a></li>
                 <li><a href="">BBS</a></li>
-                <li style="float: right;"><a href="">登陆/注册</a></li>
+                <li style="float: right;" v-if="users.msg == 'false'"><a href="./login">登录</a>/<a href="./reg/">注册</a>
+                </li>
+                <li style="float: right;" v-else><a href="./php/un_login.php">退出登录</a></li>
             </ul>
         </div>
         <div class="content">
@@ -290,7 +314,7 @@
                 <div class="indro">
                     <p>板块：</p>
                 </div>
-                <div id="forum-post-content">
+                <div>
                     <div v-if="posts.length != 0">
                         <!--判断是否有板块-->
                         <forum-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post"></forum-post>
@@ -310,15 +334,26 @@
                 </div>
                 <div class="logininfo">
                     <div class="decon">
-                        <div class="login_up">
+                        <div class="login_up" v-if="users.msg == 'false'">
                             <h3>这里是咸鱼小镇</h3>
                             <p>一个技术摸鱼BBS</p>
                         </div>
-                        <div class="login_down">
+                        <div class="login_up" v-else>
+                            <h3>欢迎！</h3>
+                            <p>{{users.level >= 2 ? '管理员':'普通用户'}}</p>
+                        </div>
+                        <div class="login_down" v-if="users.msg == 'false'">
                             <a href="./reg" class="normalbtn" target="_blank">现在注册</a>
-                            <p>已经注册了吗？请<a href="./login/">登陆</a></p>
+                            <p>已经注册了吗？请<a href="./login/">登录</a></p>
+                        </div>
+                        <div class="login_down" v-else>
+                            <a href="./user" class="username" target="_blank">{{users.username}}</a>
+                            <p>{{users.title?user.title:'暂无头衔'}}</p>
                         </div>
                     </div>
+                </div>
+                <div class="newforum" v-if="users.msg == 'true'">
+                    <a href="./php/add_forum.php">添加新板块</a>
                 </div>
             </div>
         </div>
@@ -341,10 +376,11 @@
                     </div>`
 
         });
-        new Vue({
-            el: "#forum-post-content",
+        var content = new Vue({
+            el: "#post-content",
             data: {
-                posts: []
+                posts: [],
+                users: []
             },
             created: function () {
                 let vm = this;
@@ -357,9 +393,16 @@
                     .catch(function (error) {
                         console.error();
                     });
+                axios.post("./php/checklogin.php")
+                    .then(function (response) {
+                        vm.users = response.data;
+                        console.log(vm.users);
+                    })
+                    .catch(function (error) {
+                        console.error();
+                    })
             }
         });
-
 
         window.onscroll = function () {
             var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
