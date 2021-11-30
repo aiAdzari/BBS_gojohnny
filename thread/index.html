@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>板块列表</title>
+    <title>帖子详情</title>
 
     <link rel="stylesheet" type="text/css" href="../css/reset.css">
     <link rel="stylesheet" type="text/css" href="../css/page_basic.css">
@@ -15,59 +15,54 @@
     <script src="../js/getQueryVariable.js"></script>
 
     <style>
-
-        .pages {
-            width: 100%;
-            min-height: 70px;
-            background-color: white;
-            box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
-            border-color: rgb(226, 226, 226);
-            border-width: 1px;
-            margin-bottom: 5px;
-        }
-
-        .pages_title {
-            width: 90%;
-            text-align: left;
-            padding: 20px 0 0 20px;
-            text-indent: 34px;
-
-        }
-
-        .pages_title a {
-            font-size: 17px;
-            text-decoration: none;
-            color: rgb(143, 150, 155);
-        }
-
-        .pages_title a:hover {
-            color: #4d5256;
-            text-decoration: underline;
-        }
-
-        .pages_down {
-            font-size: 14px;
-            text-align: right;
-            padding: 10px 50px 0 0;
-            color: #4d5256;
-        }
-
-
-        .skip{
-            width: 50%;
-            float: right;
-        }
-        button{
-            font-size: 14px;
-        }
-        button:hover{
-            color: rgb(160, 158, 158);
-        }
+    .main_page{
+        width: 100%;
+        min-height: 170px;
+        max-height: 500px;
+        margin-bottom: 20px;
+        background-color: white;
+    }
+    .main_page_up{
+        width: 100%;
+        min-height: 110px;
+        max-height: 180px;
+        border-bottom: 1px solid rgb(226, 226, 226);
+    }
+    .forum_name{
+        display: block;
+        text-align: left;
+        padding: 10px 0 0 30px;
+        color: rgb(143, 150, 155);
+    }
+    .thread_name{
+        text-align: left;
+        padding: 10px 0 0 10px;
+        text-indent: 48px;
+        max-height: 48px;
+        overflow: auto;
+        font-size: 24px;
+    }
+    .main_page_down{
+        width: 100%;
+        min-height: 60px;
+    }
+    .user_name{
+        color: #4d5256;
+        text-align: right;
+        padding: 5px 50px 0 0;
+    }
+    .thread_content{
+        padding: 10px;
+        font-size: 14px;
+        text-align: left;
+        text-indent: 28px;
+        overflow: auto;
+    }
     </style>
 </head>
 
 <body>
-    <div class="wrapper" id="tiopic-content">
+    <div class="wrapper" id="thread-content">
         <div id="nav" class="nav">
             <ul>
                 <li><a href="learn.gojohnny.top">项目首页</a></li>
@@ -80,11 +75,18 @@
         <div class="content">
             <div class="main">
                 <div class="sep"></div>
-                <div class="indro">
-                    <p>板块：</p>
+                <div class="main_page">
+                    <div class="main_page_up">
+                        <a class="forum_name">forum_name</a>
+                        <p class="thread_name">这里是主题的名字这里是主题的名字这里是主题的名字这里是主题的名字这里是主题的名字这里题的名字这里是主题的名字这里是主题的名字这里题的名字这里是主题的名字这里是主题的名字这里</p>
+                        <p class="user_name">·用户名·2021-11-30 03:00:22</p>
+                    </div>
+                    <div class="main_page_down">
+                        <p class="thread_content">这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容</p>
+                    </div>
                 </div>
                 <div v-if="posts.length >= 1">
-                    <!--判断是否有帖子-->
+                    <!--判断是否有回复-->
                     <tiopic-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post"></tiopic-post>
                 </div>
                 <div v-else>
@@ -98,9 +100,6 @@
             </div>
             <div class="rightbar">
                 <div id="sep2" class="sep"></div>
-                <div class="indro">
-                    <p>消息：</p>
-                </div>
                 <div class="logininfo">
                     <div class="decon">
                         <div class="login_up" v-if="users.msg == 'false'">
@@ -112,17 +111,17 @@
                             <p>{{users.level >= 2 ? '管理员':'普通用户'}}</p>
                         </div>
                         <div class="login_down" v-if="users.msg == 'false'">
-                            <a href="../reg" class="normalbtn" target="_blank">现在注册</a>
+                            <a href="./reg" class="normalbtn" target="_blank">现在注册</a>
                             <p>已经注册了吗？请<a href="./login/">登录</a></p>
                         </div>
                         <div class="login_down" v-else>
-                            <a href="../user" class="username" target="_blank">{{users.username}}</a>
+                            <a href="./user" class="username" target="_blank">{{users.username}}</a>
                             <p>{{users.title?user.title:'暂无头衔'}}</p>
                         </div>
                     </div>
                 </div>
                 <div class="newforum" v-if="users.msg == 'true'">
-                    <a href="../php/add_forum.php">添加新板块</a>
+                    <a href="./php/add_forum.php">添加新板块</a>
                 </div>
                 <div class="test"></div>
             </div>
@@ -130,11 +129,11 @@
     </div>
 
     <script>
-        Vue.component("tiopic-post", {
+        Vue.component("thead-post", {
             props: ['post'],
             template: `<div class="pages">
                         <div class="pages_title">
-                            <a :href="'../thread?F='+post.id" target="_blank">{{post.title}}</a>
+                            <a :href="'thread?F='+post.id" target="_blank">{{post.title}}</a>
                         </div>
                         <div class="pages_down">
                             <b>{{'·'+post.author+'·'}}</b><span>{{post.last_post_time}}</span>
@@ -142,7 +141,7 @@
                 </div>`
         });
         var content = new Vue({
-            el: "#tiopic-content",
+            el: "#thread-content",
             data: {
                 posts: [],
                 users: [],
@@ -152,16 +151,14 @@
             },
             created: function () {
                 let vm = this;
-                if(getQueryVariable("page")){
+                if (getQueryVariable("page")) {
                     vm.page = getQueryVariable("page");
-                }
-                else{
+                } else {
                     vm.page = 1;
                 }
-                if(getQueryVariable("F")){
+                if (getQueryVariable("F")) {
                     vm.F = getQueryVariable("F");
-                }
-                else{
+                } else {
                     vm.F = 1;
                 }
                 console.log("page=" + vm.page)
@@ -193,30 +190,28 @@
                     })
             },
             methods: {
-                uppage: function(event){
+                uppage: function (event) {
                     var newpage = Number(this.page) - 1;
-                    if(newpage >= 1){
+                    if (newpage >= 1) {
                         location.href = "./index.html?page=" + newpage;
-                    }
-                    else{
+                    } else {
                         alert("已经是第一页！");
                     }
-                    
+
                 },
-                downpage: function(event){
+                downpage: function (event) {
                     var newpage = Number(this.page) + 1;
                     console.log("newpage=" + newpage)
-                    if(newpage <= this.total_page){
+                    if (newpage <= this.total_page) {
                         location.href = "./index.html?page=" + newpage;
-                    }
-                    else{
+                    } else {
                         alert("已经是最后一页！")
                     }
                 }
             }
-            
+
         });
     </script>
 </body>
 
-</html>
+</html>l
