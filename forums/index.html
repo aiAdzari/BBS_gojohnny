@@ -258,9 +258,9 @@
     <div class="wrapper" id="tiopic-content">
         <div id="nav" class="nav">
             <ul>
-                <li><a href="">项目首页</a></li>
-                <li><a href="">BBS</a></li>
-                <li style="float: right;" v-if="users.msg == 'false'"><a href="./login">登录</a>/<a href="./reg/">注册</a>
+                <li><a href="learn.gojohnny.top">项目首页</a></li>
+                <li><a href="../index.html">BBS首页</a></li>
+                <li style="float: right;" v-if="users.msg == 'false'"><a href="../login">登录</a>/<a href="../reg/">注册</a>
                 </li>
                 <li style="float: right;" v-else><a href="./php/un_login.php">退出登录</a></li>
             </ul>
@@ -271,7 +271,7 @@
                 <div class="indro">
                     <p>板块：</p>
                 </div>
-                <div v-if="posts.length != 0">
+                <div v-if="posts.length >= 1">
                     <!--判断是否有板块-->
                     <tiopic-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post"></tiopic-post>
                 </div>
@@ -346,6 +346,7 @@
                 users: [],
                 total_page: 1,
                 page: 1,
+                F: 1,
             },
             created: function () {
                 let vm = this;
@@ -355,9 +356,16 @@
                 else{
                     vm.page = 1;
                 }
+                if(getQueryVariable("F")){
+                    vm.F = getQueryVariable("F");
+                }
+                else{
+                    vm.F = 1;
+                }
                 console.log("page=" + vm.page)
+                console.log("F=" + vm.F)
 
-                axios.post("../php/forum.php?page=" + vm.page)
+                axios.post("../php/forum.php?F=" + vm.F + "&page=" + vm.page)
                     .then(function (response) {
                         vm.posts = response.data;
                         console.log(vm.posts);
@@ -373,7 +381,7 @@
                     .catch(function (error) {
                         console.error();
                     })
-                axios.post("../php/page_count.php?page=" + vm.page)
+                axios.post("../php/page_count.php?F=" + vm.F + "&page=" + vm.page)
                     .then(function (response) {
                         vm.total_page = response.data;
                         console.log(vm.total_page);

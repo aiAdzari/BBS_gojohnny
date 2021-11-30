@@ -15,7 +15,7 @@
     $results[] = $row;
     }
  
-    if($results){
+    if(!empty($results)){
         echo json_encode($results);
  
     }  else{

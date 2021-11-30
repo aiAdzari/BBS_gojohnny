@@ -15,7 +15,7 @@ require('conn.php');
 $table_name = "tiopic"; //查取表名设置
 $perpage = 10; //每页显示的数据个数
 //最大页数和总记录数
-$total_sql = "select count(*) from $table_name";
+$total_sql = "select count(*) from $table_name WHERE main_id='$F'";
 $total_result = mysqli_query($conn, $total_sql);
 $total_row = mysqli_fetch_row($total_result);
 $total = $total_row[0]; //获取最大页码数
@@ -39,9 +39,9 @@ if ($sum > 0) {
         $results[] = $row;
     }
 }
-if ($results) {
+if (!empty($results)) {
     echo json_encode($results);
 } else {
-    echo false;
+    echo 0;
 }
 ?>
