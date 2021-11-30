@@ -7,7 +7,7 @@
     <title>BBS</title>
     <link rel="stylesheet" type="text/css" href="./css/reset.css">
 
-    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/qs/6.9.4/qs.min.js"></script>
@@ -23,6 +23,10 @@
             transition: color 0.2s;
             color: black;
 
+        }
+
+        [v-cloak] {
+            display: none;
         }
 
         a:hover {
@@ -303,7 +307,8 @@
             <ul>
                 <li><a href="">项目首页</a></li>
                 <li><a href="">BBS</a></li>
-                <li style="float: right;" v-if="users.msg == 'false'"><a href="./login">登录</a>/<a href="./reg/">注册</a>
+                <li style="float: right;" v-if="users.msg == 'false'"><a href="./login">登录</a>/<a
+                        href="./reg/">注册</a>
                 </li>
                 <li style="float: right;" v-else><a href="./php/un_login.php">退出登录</a></li>
             </ul>
@@ -319,7 +324,7 @@
                         <!--判断是否有板块-->
                         <forum-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post"></forum-post>
                     </div>
-                    <div v-else>
+                    <div v-else >
                         <p id="empty_repo">板块为空或获取失败！</p>
                     </div>
                 </div>

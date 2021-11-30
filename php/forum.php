@@ -13,7 +13,7 @@ if (empty($_GET['F'])) {
 require('conn.php');
 
 $table_name = "tiopic"; //查取表名设置
-$perpage = 15; //每页显示的数据个数
+$perpage = 10; //每页显示的数据个数
 //最大页数和总记录数
 $total_sql = "select count(*) from $table_name";
 $total_result = mysqli_query($conn, $total_sql);

@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" type="text/css" href="../css/reset.css">
 
-    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/qs/6.9.4/qs.min.js"></script>
@@ -241,6 +241,16 @@
             font-size: 20px;
             font-weight: bold;
         }
+        .skip{
+            width: 50%;
+            float: right;
+        }
+        button{
+            font-size: 14px;
+        }
+        button:hover{
+            color: rgb(160, 158, 158);
+        }
     </style>
 </head>
 
@@ -268,8 +278,11 @@
                 <div v-else>
                     <p id="empty_repo">帖子为空或获取失败！</p>
                 </div>
-
-
+                <div class="skip">
+                        <button v-on:click="uppage">上一页</button>
+                    <span>{{'第'+page+'页/共'+total_page+'页'}}</span>
+                        <button v-on:click="downpage">下一页</button>
+                </div>
             </div>
             <div class="rightbar">
                 <div id="sep2" class="sep"></div>
@@ -305,11 +318,21 @@
     </div>
 
     <script>
+        function getQueryVariable(variable) //获取url参数
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
         Vue.component("tiopic-post", {
             props: ['post'],
             template: `<div class="pages">
                         <div class="pages_title">
-                            <a href="" target="_blank">{{post.title}}</a>
+                            <a :href="'thread?F='+post.id" target="_blank">{{post.title}}</a>
                         </div>
                         <div class="pages_down">
                             <b>{{'·'+post.author+'·'}}</b><span>{{post.last_post_time}}</span>
@@ -320,12 +343,21 @@
             el: "#tiopic-content",
             data: {
                 posts: [],
-                users: []
+                users: [],
+                total_page: 1,
+                page: 1,
             },
             created: function () {
                 let vm = this;
+                if(getQueryVariable("page")){
+                    vm.page = getQueryVariable("page");
+                }
+                else{
+                    vm.page = 1;
+                }
+                console.log("page=" + vm.page)
 
-                axios.post("../php/forum.php")
+                axios.post("../php/forum.php?page=" + vm.page)
                     .then(function (response) {
                         vm.posts = response.data;
                         console.log(vm.posts);
@@ -341,7 +373,38 @@
                     .catch(function (error) {
                         console.error();
                     })
+                axios.post("../php/page_count.php?page=" + vm.page)
+                    .then(function (response) {
+                        vm.total_page = response.data;
+                        console.log(vm.total_page);
+                    })
+                    .catch(function (error) {
+                        console.error();
+                    })
+            },
+            methods: {
+                uppage: function(event){
+                    var newpage = Number(this.page) - 1;
+                    if(newpage >= 1){
+                        location.href = "./index.html?page=" + newpage;
+                    }
+                    else{
+                        alert("已经是第一页！");
+                    }
+                    
+                },
+                downpage: function(event){
+                    var newpage = Number(this.page) + 1;
+                    console.log("newpage=" + newpage)
+                    if(newpage <= this.total_page){
+                        location.href = "./index.html?page=" + newpage;
+                    }
+                    else{
+                        alert("已经是最后一页！")
+                    }
+                }
             }
+            
         });
     </script>
 </body>
