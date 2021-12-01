@@ -13,6 +13,21 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
     <script src="./js/fixscroll.js"></script>
 
+    <style>
+        a {
+            transition: color 0.2s;
+            color: black;
+
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        a:hover {
+            color: rgb(160, 158, 158);
+        }
+    </style>
 </head>
 
 <body>
@@ -23,7 +38,7 @@
         </div>
         <div id="nav" class="nav">
             <ul>
-                <li><a href="learn.gojohnny.top">项目首页</a></li>
+                <li><a href="http://learn.gojohnny.top">项目合集</a></li>
                 <li><a href="./index.html">BBS首页</a></li>
                 <li style="float: right;" v-if="users.msg == 'false'"><a href="./login">登录</a>/<a href="./reg/">注册</a>
                 </li>

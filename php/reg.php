@@ -15,7 +15,7 @@ $que=mysqli_query($conn,$sql1);
 $row=mysqli_fetch_array($que);
 
 if($row){
-    echo"<script>alert('用户名已经被注册');location.href='reg.html';</script>";
+    echo"<script>alert('用户名已经被注册');location.href='../reg';</script>";
 }else{
     $sql="INSERT into member(username,password,email,log_time)VALUES
     ('$username','$password','$email','$log_time')";

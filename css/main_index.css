@@ -4,20 +4,6 @@ body {
     background-color: rgb(226, 226, 226);
 }
 
-a {
-    transition: color 0.2s;
-    color: black;
-
-}
-
-[v-cloak] {
-    display: none;
-}
-
-a:hover {
-    color: rgb(160, 158, 158);
-}
-
 .wrapper {
     display: -webkit-flex;
     display: flex;
