@@ -6,5 +6,5 @@ unset($_SESSION['level']);
 
 session_destroy();
 
-echo"<script>alert('退出成功');location.href='../index.html';</script>";
+echo"<script>alert('退出成功');location.href='".$_SERVER["HTTP_REFERER"]."';;</script>";
 ?>

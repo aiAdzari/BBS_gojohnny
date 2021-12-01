@@ -15,49 +15,97 @@
     <script src="../js/getQueryVariable.js"></script>
 
     <style>
-    .main_page{
-        width: 100%;
-        min-height: 170px;
-        max-height: 500px;
-        margin-bottom: 20px;
-        background-color: white;
-    }
-    .main_page_up{
-        width: 100%;
-        min-height: 110px;
-        max-height: 180px;
-        border-bottom: 1px solid rgb(226, 226, 226);
-    }
-    .forum_name{
-        display: block;
-        text-align: left;
-        padding: 10px 0 0 30px;
-        color: rgb(143, 150, 155);
-    }
-    .thread_name{
-        text-align: left;
-        padding: 10px 0 0 10px;
-        text-indent: 48px;
-        max-height: 48px;
-        overflow: auto;
-        font-size: 24px;
-    }
-    .main_page_down{
-        width: 100%;
-        min-height: 60px;
-    }
-    .user_name{
-        color: #4d5256;
-        text-align: right;
-        padding: 5px 50px 0 0;
-    }
-    .thread_content{
-        padding: 10px;
-        font-size: 14px;
-        text-align: left;
-        text-indent: 28px;
-        overflow: auto;
-    }
+        .main_page {
+            width: 100%;
+            min-height: 170px;
+            max-height: 500px;
+            margin-bottom: 20px;
+            background-color: white;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
+            border-color: rgb(226, 226, 226);
+            border-width: 1px;
+        }
+
+        .main_page_up {
+            width: 100%;
+            min-height: 90px;
+            max-height: 180px;
+            border-bottom: 1px solid rgb(226, 226, 226);
+        }
+
+        .forum_name {
+            display: block;
+            text-align: left;
+            padding: 10px 0 0 30px;
+            color: rgb(143, 150, 155);
+        }
+
+        .thread_name {
+            text-align: left;
+            padding: 10px 0 0 10px;
+            text-indent: 48px;
+            max-height: 48px;
+            overflow: auto;
+            font-size: 24px;
+        }
+
+        .main_page_down {
+            width: 100%;
+            min-height: 60px;
+        }
+
+        .user_name {
+            color: #4d5256;
+            text-align: right;
+            padding: 5px 50px 0 0;
+        }
+
+        .thread_content {
+            padding: 10px;
+            font-size: 14px;
+            text-align: left;
+            text-indent: 28px;
+            overflow: auto;
+        }
+
+        .reply {
+            width: 100%;
+            min-height: 80px;
+            max-height: 150px;
+            background-color: white;
+            border-bottom: 1px solid rgb(226, 226, 226);
+            text-align: left;
+        }
+
+        .reply_user {
+            padding: 10px 10px 0 20px;
+            color: #4d5256;
+        }
+
+        .reply_content {
+            padding: 10px 10px 10px 10px;
+            font-size: 14px;
+            text-indent: 28px;
+            overflow: auto;
+        }
+
+        .reply_time {
+            text-align: right;
+            padding: 0 30px 10px 0;
+        }
+
+        .newreply {
+            width: 100%;
+            min-height: 100px;
+            max-height: 300px;
+            text-align: left;
+        }
+
+        .newreply textarea {
+            width: 95%;
+            font-size: 14;
+            resize: none;
+        }
     </style>
 </head>
 
@@ -69,7 +117,7 @@
                 <li><a href="../index.html">BBS首页</a></li>
                 <li style="float: right;" v-if="users.msg == 'false'"><a href="../login">登录</a>/<a href="../reg/">注册</a>
                 </li>
-                <li style="float: right;" v-else><a href="./php/un_login.php">退出登录</a></li>
+                <li style="float: right;" v-else><a href="../php/un_login.php">退出登录</a></li>
             </ul>
         </div>
         <div class="content">
@@ -77,25 +125,25 @@
                 <div class="sep"></div>
                 <div class="main_page">
                     <div class="main_page_up">
-                        <a class="forum_name">forum_name</a>
-                        <p class="thread_name">这里是主题的名字这里是主题的名字这里是主题的名字这里是主题的名字这里是主题的名字这里题的名字这里是主题的名字这里是主题的名字这里题的名字这里是主题的名字这里是主题的名字这里</p>
-                        <p class="user_name">·用户名·2021-11-30 03:00:22</p>
+                        <a class="forum_name">{{"帖子详情·共"+ count.reply_num + "条回复"}}</a>
+                        <p class="thread_name">{{thread.title}}</p>
+                        <p class="user_name">{{'·'+thread.author+'·发布时间：'+thread.last_post_time}}</p>
                     </div>
                     <div class="main_page_down">
-                        <p class="thread_content">这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容这里是帖子的内容</p>
+                        <p class="thread_content">{{thread.content}}</p>
                     </div>
                 </div>
-                <div v-if="posts.length >= 1">
+                <div v-if="count.reply_num >= 1">
                     <!--判断是否有回复-->
-                    <tiopic-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post"></tiopic-post>
+                    <thread-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post"></thread-post>
                 </div>
                 <div v-else>
-                    <p id="empty_repo">帖子为空或获取失败！</p>
+                    <p class="empty_repo">暂时木有人回复yo</p>
                 </div>
                 <div class="skip">
-                        <button v-on:click="uppage">上一页</button>
-                    <span>{{'第'+page+'页/共'+total_page+'页'}}</span>
-                        <button v-on:click="downpage">下一页</button>
+                    <button v-on:click="uppage">上一页</button>
+                    <span>{{'第'+page+'页/共'+count.total_page+'页'}}</span>
+                    <button v-on:click="downpage">下一页</button>
                 </div>
             </div>
             <div class="rightbar">
@@ -120,8 +168,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="newforum" v-if="users.msg == 'true'">
-                    <a href="./php/add_forum.php">添加新板块</a>
+                <div class="newreply" v-if="users.msg == 'true'">
+                    <form action="../php/newreply.php" method="post">
+                        <tr>
+                            <td colspan="2">
+                                <p>回复此帖子：</p>
+                                <textarea name="tiopic_reply" cols="30" rows="6"></textarea>
+                                <div>
+                                    <input type="submit" name="submit" value="回复">
+                                    <input type="reset" value="重置">
+                                </div>
+                            </td>
+                        </tr>
+                    </form>
                 </div>
                 <div class="test"></div>
             </div>
@@ -129,25 +188,23 @@
     </div>
 
     <script>
-        Vue.component("thead-post", {
+        Vue.component("thread-post", {
             props: ['post'],
-            template: `<div class="pages">
-                        <div class="pages_title">
-                            <a :href="'thread?F='+post.id" target="_blank">{{post.title}}</a>
-                        </div>
-                        <div class="pages_down">
-                            <b>{{'·'+post.author+'·'}}</b><span>{{post.last_post_time}}</span>
-                        </div>
+            template: `<div class="reply">
+                        <p class="reply_user">{{'·'+ post.author +'·'}}</p>
+                    <p class="reply_content">{{post.content}}</p>
+                    <p class="reply_time">{{'回复时间：' + post.last_post_time}}</p>
                 </div>`
         });
         var content = new Vue({
             el: "#thread-content",
             data: {
+                thread: [],
                 posts: [],
                 users: [],
-                total_page: 1,
+                count: [],
                 page: 1,
-                F: 1,
+                id: 1,
             },
             created: function () {
                 let vm = this;
@@ -156,15 +213,23 @@
                 } else {
                     vm.page = 1;
                 }
-                if (getQueryVariable("F")) {
-                    vm.F = getQueryVariable("F");
+                if (getQueryVariable("id")) {
+                    vm.id = getQueryVariable("id");
                 } else {
-                    vm.F = 1;
+                    vm.id = 1;
                 }
                 console.log("page=" + vm.page)
-                console.log("F=" + vm.F)
+                console.log("id=" + vm.id)
 
-                axios.post("../php/forum.php?F=" + vm.F + "&page=" + vm.page)
+                axios.post("../php/thread_content.php?id=" + vm.id)
+                    .then(function (response) {
+                        vm.thread = response.data;
+                        console.log(vm.thread);
+                    })
+                    .catch(function (error) {
+                        console.error();
+                    });
+                axios.post("../php/reply.php?id=" + vm.id + "&page=" + vm.page)
                     .then(function (response) {
                         vm.posts = response.data;
                         console.log(vm.posts);
@@ -180,10 +245,10 @@
                     .catch(function (error) {
                         console.error();
                     })
-                axios.post("../php/page_count.php?F=" + vm.F + "&page=" + vm.page)
+                axios.post("../php/reply_count.php?id=" + vm.id)
                     .then(function (response) {
-                        vm.total_page = response.data;
-                        console.log(vm.total_page);
+                        vm.count = response.data;
+                        console.log(vm.count);
                     })
                     .catch(function (error) {
                         console.error();
@@ -193,7 +258,7 @@
                 uppage: function (event) {
                     var newpage = Number(this.page) - 1;
                     if (newpage >= 1) {
-                        location.href = "./index.html?page=" + newpage;
+                        location.href = "./index.html?id=" + this.id + "&page=" + newpage;
                     } else {
                         alert("已经是第一页！");
                     }
@@ -202,8 +267,8 @@
                 downpage: function (event) {
                     var newpage = Number(this.page) + 1;
                     console.log("newpage=" + newpage)
-                    if (newpage <= this.total_page) {
-                        location.href = "./index.html?page=" + newpage;
+                    if (newpage <= this.count.total_page) {
+                        location.href = "./index.html?id=" + this.id + "&page=" + newpage;
                     } else {
                         alert("已经是最后一页！")
                     }

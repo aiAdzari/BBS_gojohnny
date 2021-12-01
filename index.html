@@ -25,8 +25,7 @@
             <ul>
                 <li><a href="learn.gojohnny.top">项目首页</a></li>
                 <li><a href="./index.html">BBS首页</a></li>
-                <li style="float: right;" v-if="users.msg == 'false'"><a href="./login">登录</a>/<a
-                        href="./reg/">注册</a>
+                <li style="float: right;" v-if="users.msg == 'false'"><a href="./login">登录</a>/<a href="./reg/">注册</a>
                 </li>
                 <li style="float: right;" v-else><a href="./php/un_login.php">退出登录</a></li>
             </ul>
@@ -42,7 +41,7 @@
                         <!--判断是否有板块-->
                         <forum-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post"></forum-post>
                     </div>
-                    <div v-else >
+                    <div v-else>
                         <p id="empty_repo">板块为空或获取失败！</p>
                     </div>
                 </div>
@@ -76,7 +75,31 @@
                     </div>
                 </div>
                 <div class="newforum" v-if="users.msg == 'true'">
-                    <a href="./php/add_forum.php">添加新板块</a>
+                    <a href="../php/add_forum.php">板块管理</a>
+                    <!-- <form action="./php/newforum.php" method="post">
+                        <table cellspacing="0" cellpadding="8">
+                            <tr>
+                                <tr><strong>板块名称</strong></tr>
+                                <td><input name="forum_name" type="text" placeholder="板块名称"></td>
+                            </tr>
+                            <tr>
+                                <tr><strong>板块主题</strong></tr>
+                                <td><input name="Subject" type="text" placeholder="板块类目"></td>
+                            </tr>
+                            
+                            <tr>
+                                <tr><strong>板块简介</strong></tr>
+                                <td><textarea name="forum_description" cols="30" rows="5"></textarea></td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <input type="submit" name="submit" class="btn" value="添加">
+                                    <input type="reset" name="submit2" class="btn" value="清空输入">
+                                </td>
+                            </tr>
+                        </table>
+                    </form> -->
                 </div>
             </div>
         </div>
@@ -126,7 +149,6 @@
                     })
             }
         });
-
     </script>
 </body>
 

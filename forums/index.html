@@ -15,7 +15,6 @@
     <script src="../js/getQueryVariable.js"></script>
 
     <style>
-
         .pages {
             width: 100%;
             min-height: 70px;
@@ -53,15 +52,33 @@
         }
 
 
-        .skip{
+        .skip {
             width: 50%;
             float: right;
         }
-        button{
+
+        button {
             font-size: 14px;
         }
-        button:hover{
+
+        button:hover {
             color: rgb(160, 158, 158);
+        }
+
+        .newthread {
+            width: 100%;
+            min-height: 100px;
+            max-height: 300px;
+        }
+
+        .newthread textarea {
+            width: 100%;
+            font-size: 14;
+            resize: none;
+        }
+
+        .newthread_title {
+            width: 80%;
         }
     </style>
 </head>
@@ -74,26 +91,26 @@
                 <li><a href="../index.html">BBS首页</a></li>
                 <li style="float: right;" v-if="users.msg == 'false'"><a href="../login">登录</a>/<a href="../reg/">注册</a>
                 </li>
-                <li style="float: right;" v-else><a href="./php/un_login.php">退出登录</a></li>
+                <li style="float: right;" v-else><a href="../php/un_login.php">退出登录</a></li>
             </ul>
         </div>
         <div class="content">
             <div class="main">
                 <div class="sep"></div>
                 <div class="indro">
-                    <p>板块：</p>
+                    <p>帖子：</p>
                 </div>
                 <div v-if="posts.length >= 1">
                     <!--判断是否有帖子-->
                     <tiopic-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post"></tiopic-post>
                 </div>
                 <div v-else>
-                    <p id="empty_repo">帖子为空或获取失败！</p>
+                    <p class="empty_repo">帖子为空或获取失败！</p>
                 </div>
                 <div class="skip">
-                        <button v-on:click="uppage">上一页</button>
+                    <button v-on:click="uppage">上一页</button>
                     <span>{{'第'+page+'页/共'+total_page+'页'}}</span>
-                        <button v-on:click="downpage">下一页</button>
+                    <button v-on:click="downpage">下一页</button>
                 </div>
             </div>
             <div class="rightbar">
@@ -121,8 +138,29 @@
                         </div>
                     </div>
                 </div>
-                <div class="newforum" v-if="users.msg == 'true'">
-                    <a href="../php/add_forum.php">添加新板块</a>
+                <div class="newthread" v-if="users.msg == 'true'">
+                    <form method="post" action="../php/newthread.php">
+                        <table border="1" cellpadding="8" cellspacing="0">
+                            <tr>
+                                <td>发布新帖</td>
+                            </tr>
+                            <tr>
+                                <td><input class="newthread_title" type="text" name="title" maxlength="35"
+                                        placeholder="请输入标题"></td>
+                            </tr>
+                            <tr>
+                                <td><textarea cols="35" rows="15" name="content" placeholder="请输入内容">
+                                </textarea></td>
+                            </tr>
+
+                            <tr class="sub">
+                                <td colspan="2">
+                                    <input type="submit" value="发布">
+                                    <input type="reset" value="重置">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
                 </div>
                 <div class="test"></div>
             </div>
@@ -134,7 +172,7 @@
             props: ['post'],
             template: `<div class="pages">
                         <div class="pages_title">
-                            <a :href="'../thread?F='+post.id" target="_blank">{{post.title}}</a>
+                            <a :href="'../thread?id='+post.id" target="_blank">{{post.title}}</a>
                         </div>
                         <div class="pages_down">
                             <b>{{'·'+post.author+'·'}}</b><span>{{post.last_post_time}}</span>
@@ -152,16 +190,14 @@
             },
             created: function () {
                 let vm = this;
-                if(getQueryVariable("page")){
+                if (getQueryVariable("page")) {
                     vm.page = getQueryVariable("page");
-                }
-                else{
+                } else {
                     vm.page = 1;
                 }
-                if(getQueryVariable("F")){
+                if (getQueryVariable("F")) {
                     vm.F = getQueryVariable("F");
-                }
-                else{
+                } else {
                     vm.F = 1;
                 }
                 console.log("page=" + vm.page)
@@ -183,7 +219,7 @@
                     .catch(function (error) {
                         console.error();
                     })
-                axios.post("../php/page_count.php?F=" + vm.F + "&page=" + vm.page)
+                axios.post("../php/page_count.php?F=" + vm.F)
                     .then(function (response) {
                         vm.total_page = response.data;
                         console.log(vm.total_page);
@@ -193,28 +229,26 @@
                     })
             },
             methods: {
-                uppage: function(event){
+                uppage: function (event) {
                     var newpage = Number(this.page) - 1;
-                    if(newpage >= 1){
+                    if (newpage >= 1) {
                         location.href = "./index.html?page=" + newpage;
-                    }
-                    else{
+                    } else {
                         alert("已经是第一页！");
                     }
-                    
+
                 },
-                downpage: function(event){
+                downpage: function (event) {
                     var newpage = Number(this.page) + 1;
                     console.log("newpage=" + newpage)
-                    if(newpage <= this.total_page){
+                    if (newpage <= this.total_page) {
                         location.href = "./index.html?page=" + newpage;
-                    }
-                    else{
+                    } else {
                         alert("已经是最后一页！")
                     }
                 }
             }
-            
+
         });
     </script>
 </body>
