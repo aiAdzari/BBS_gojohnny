@@ -24,7 +24,8 @@ body {
 
 .title h2 {
     margin: 20px 5vw;
-    width: 50vw;
+    width: 50%;
+    min-width: 400px;
     font-size: 30px;
     display: inline-block;
 }

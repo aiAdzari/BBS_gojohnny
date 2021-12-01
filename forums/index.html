@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>板块列表</title>
 
     <link rel="stylesheet" type="text/css" href="../css/reset.css">
@@ -133,7 +133,7 @@
                         </div>
                         <div class="login_down" v-if="users.msg == 'false'">
                             <a href="../reg" class="normalbtn" target="_blank">现在注册</a>
-                            <p>已经注册了吗？请<a href="./login/">登录</a></p>
+                            <p>已经注册了吗？请<a href="../login/">登录</a></p>
                         </div>
                         <div class="login_down" v-else>
                             <a href="../user" class="username" target="_blank">{{users.username}}</a>
@@ -175,7 +175,7 @@
             props: ['post'],
             template: `<div class="pages">
                         <div class="pages_title">
-                            <a :href="'../thread?id='+post.id" target="_blank">{{post.title}}</a>
+                            <a :href="'../thread?id='+post.id">{{post.title}}</a>
                         </div>
                         <div class="pages_down">
                             <b>{{'·'+post.author+'·'}}</b><span>{{post.last_post_time}}</span>
