@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>帖子详情</title>
 
     <link rel="stylesheet" type="text/css" href="../css/reset.css">
@@ -61,10 +61,9 @@
         }
 
         .thread_content {
-            padding: 10px;
+            padding: 10px 0 10px 25px;
             font-size: 14px;
             text-align: left;
-            text-indent: 28px;
             overflow: auto;
         }
 
@@ -137,7 +136,7 @@
                         <p class="user_name">{{'·'+thread.author+'·发布时间：'+thread.last_post_time}}</p>
                     </div>
                     <div class="main_page_down">
-                        <p class="thread_content">{{thread.content}}</p>
+                        <p class="thread_content"><span v-html="thread.content"></span></p>
                     </div>
                 </div>
                 <div v-if="count.reply_num >= 1">

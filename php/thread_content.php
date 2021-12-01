@@ -18,6 +18,7 @@ else
 $sql="select * from tiopic where id='$id'";
 $que=mysqli_query($conn,$sql);
 $row=mysqli_fetch_assoc($que);
+$row['content'] = nl2br($row['content']);
 
 if (!empty($row)) {
     echo json_encode($row);
