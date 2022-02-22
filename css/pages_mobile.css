@@ -1,0 +1,44 @@
+.wrapper {
+    min-width: 375px;
+}
+
+.indro2,
+.logininfo,
+#sep2 {
+    display: none;
+}
+
+.newthread {
+    display: block;
+}
+
+.content {
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.main {
+    width: 80%;
+    min-width: 340px;
+}
+
+.nav {
+    min-width: 340px;
+}
+
+.nav a {
+    font-size: 15px;
+    margin: 15px 15px;
+}
+
+.skip {
+    width: 80% !important;
+}
+
+.rightbar {
+    width: 80%;
+}
+
+.newreply {
+    margin-top: 20px;
+}

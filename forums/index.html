@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" type="text/css" href="../css/reset.css">
     <link rel="stylesheet" type="text/css" href="../css/page_basic.css">
+    <link rel="stylesheet" type="text/css" media="screen and (max-width: 800px)" href="../css/pages_mobile.css">
 
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
@@ -105,7 +106,7 @@
                 </div>
                 <div v-if="posts.length >= 1">
                     <!--判断是否有帖子-->
-                    <tiopic-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post"></tiopic-post>
+                    <tiopic-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post" v-bind:F="F"></tiopic-post>
                 </div>
                 <div v-else>
                     <p class="empty_repo">帖子为空或获取失败！</p>
@@ -118,7 +119,7 @@
             </div>
             <div class="rightbar">
                 <div id="sep2" class="sep"></div>
-                <div class="indro">
+                <div class="indro2">
                     <p>消息：</p>
                 </div>
                 <div class="logininfo">
@@ -172,10 +173,10 @@
 
     <script>
         Vue.component("tiopic-post", {
-            props: ['post'],
+            props: ['post','F'],
             template: `<div class="pages">
                         <div class="pages_title">
-                            <a :href="'../thread?id='+post.id">{{post.title}}</a>
+                            <a :href="'../thread?id='+post.id+'&F='+F">{{post.title}}</a>
                         </div>
                         <div class="pages_down">
                             <b>{{'·'+post.author+'·'}}</b><span>{{post.last_post_time}}</span>

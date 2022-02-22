@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" type="text/css" href="../css/reset.css">
     <link rel="stylesheet" type="text/css" href="../css/page_basic.css">
+    <link rel="stylesheet" type="text/css" media="screen and (max-width: 800px)" href="../css/pages_mobile.css">
 
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
@@ -61,8 +62,9 @@
         }
 
         .thread_content {
-            padding: 10px 0 10px 25px;
+            padding: 10px 5px 10px 25px;
             font-size: 14px;
+            line-height: 20px;
             text-align: left;
             overflow: auto;
         }
@@ -108,7 +110,8 @@
             font-size: 14;
             resize: none;
         }
-        .skip{
+
+        .skip {
             margin-top: 10px;
         }
     </style>
@@ -120,7 +123,7 @@
             <ul>
                 <li><a href="http://learn.gojohnny.top">项目合集</a></li>
                 <li><a href="../index.html">BBS首页</a></li>
-                <li><a href="../forums">返回</a></li>
+                <li><a :href="'../forums/?F='+F">返回</a></li>
                 <li style="float: right;" v-if="users.msg == 'false'"><a href="../login">登录</a>/<a href="../reg/">注册</a>
                 </li>
                 <li style="float: right;" v-else><a href="../php/un_login.php">退出登录</a></li>
@@ -165,11 +168,11 @@
                             <p>{{users.level >= 2 ? '管理员':'普通用户'}}</p>
                         </div>
                         <div class="login_down" v-if="users.msg == 'false'">
-                            <a href="./reg" class="normalbtn" target="_blank">现在注册</a>
+                            <a href="../reg" class="normalbtn" target="_blank">现在注册</a>
                             <p>已经注册了吗？请<a href="./login/">登录</a></p>
                         </div>
                         <div class="login_down" v-else>
-                            <a href="./user" class="username" target="_blank">{{users.username}}</a>
+                            <a href="../user" class="username" target="_blank">{{users.username}}</a>
                             <p>{{users.title?user.title:'暂无头衔'}}</p>
                         </div>
                     </div>
@@ -211,6 +214,7 @@
                 count: [],
                 page: 1,
                 id: 1,
+                F: 1,
             },
             created: function () {
                 let vm = this;
@@ -223,6 +227,11 @@
                     vm.id = getQueryVariable("id");
                 } else {
                     vm.id = 1;
+                }
+                if (getQueryVariable("F")) {
+                    vm.F = getQueryVariable("F");
+                } else {
+                    vm.F = 1;
                 }
                 console.log("page=" + vm.page)
                 console.log("id=" + vm.id)

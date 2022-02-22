@@ -61,6 +61,8 @@ a:hover {
     display: flex;
     justify-content: center;
     -webkit-justify-content: center;
+    animation: comeOut 0.5s ease-out;
+    -webkit-animation: comeOut 0.5s ease-out;
 }
 
 .main {
@@ -89,6 +91,19 @@ a:hover {
 }
 
 .indro p {
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.indro2 {
+    width: 100%;
+    height: 30px;
+    background-color: rgb(226, 226, 226);
+    text-align: left;
+
+}
+
+.indro2 p {
     font-size: 20px;
     line-height: 20px;
 }
@@ -197,4 +212,14 @@ a:hover {
     box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
     border-color: rgb(226, 226, 226);
     border-width: 1px;
+}
+@keyframes comeOut {
+    from {
+        margin-top: 100px;
+        opacity: 0;
+    }
+    to {
+        margin-top: 0px;
+        opacity: 1;
+    }
 }

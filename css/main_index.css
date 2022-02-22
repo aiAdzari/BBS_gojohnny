@@ -72,6 +72,8 @@ body {
     display: flex;
     justify-content: center;
     -webkit-justify-content: center;
+    animation: comeOut 0.5s ease-out;
+    -webkit-animation: comeOut 0.5s ease-out;
 }
 
 .main {
@@ -263,4 +265,14 @@ body {
     color: black;
     font-size: 20px;
     font-weight: bold;
+}
+@keyframes comeOut {
+    from {
+        margin-top: 100px;
+        opacity: 0;
+    }
+    to {
+        margin-top: 0;
+        opacity: 1;
+    }
 }
